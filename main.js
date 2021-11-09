@@ -15,7 +15,7 @@
  * To make the second one happen, the number to change
  * is the first argument to `repeat`, currently set at 10.
  */
-const gridWidth = 10;
+const gridWidth = 50;
 let count = 0;
 while (count <= gridWidth * gridWidth) {
   const canvas = document.querySelector('.canvas');
@@ -48,8 +48,11 @@ while (count <= gridWidth * gridWidth) {
 
 // Add queries for all your squares, palette colors, and brush here.
 // (Note the singular or plural used in that sentence!)
-
-
+const canvas = document.querySelector('.canvas');
+const palette = document.querySelectorAll('.palette-color');
+const brush = document.querySelector('.current-brush');
+const button = document.querySelector('#reset');
+let mouseDown = false;
 
 /****************************
  * EVENT LISTENER FUNCTIONS *
@@ -60,8 +63,15 @@ while (count <= gridWidth * gridWidth) {
 // empty at first, though a console.log just to know they're being
 // run as event listeners (after the next step is set up) isn't a
 // bad idea for testing purposes.
+palette.forEach (function (event) {
+  event.addEventListener('click', function(){
+    brush.classList.replace(brush.classList[1], event.classList[1])
+  })
+});
 
-
+canvas.forEach (function (event) {
+  event.target.classList.replace(event.target.classList[1], brush.classList[1]);
+});
 
 /**************************
  * WIRING IT ALL TOGETHER *
@@ -71,3 +81,16 @@ while (count <= gridWidth * gridWidth) {
 // You'll need to add the appropriate event listener for each
 // square and for each palette color from the functions you
 // wrote above.
+canvas.addEventListener('mouseup', function(){
+  mouseDown = false;
+});
+
+canvas.addEventListener('mousedown', function(){
+  mouseDown = true;
+});
+
+canvas.addEventListener('mouseover', function(event){
+  if (mouseDown === true){
+    event.target.classList.replace(event.target.classList[1], brush.classList[1]);
+  }
+});
